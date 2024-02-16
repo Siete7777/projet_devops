@@ -1,7 +1,7 @@
 provider "aws"{
     region = "us-east-1"
-    access_key = "AKIATCKAM6PFBVPYALXC"
-    secret_key = "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"  
+    access_key = ""
+    secret_key = ""  
 }
 # Dans cette section on fournit les informations sur notre provider de cloud
 # Ainsi que sur notre région préférée pour l'hébergement.
