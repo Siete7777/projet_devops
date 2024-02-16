@@ -1,16 +1,47 @@
 provider "aws"{
-    region = "us-east-1"  # Remplacez par votre région AWS préférée
+    region = "us-east-1"
+    access_key = "AKIATCKAM6PFBVPYALXC"
+    secret_key = "U7ATEOQcx9723ccfcsQYI30kqrhrwqfJQIvj9vX3"  
 }
-  
-  resource "aws_instance""example"{
+# Dans cette section on fournit les informations sur notre provider de cloud
+# Ainsi que sur notre région préférée pour l'hébergement.
+
+
+# Création de l'instance EC2
+  resource "aws_instance""Owncloud" {
     ami           = "ami-0c7217cdde317cfec"  # ID de l'AMI Ubuntu 22.04 LTS
     instance_type = "t2.micro"               # Type d'instance
     key_name      = "AKIATCKAM6PFBKF47YKD "          # Remplacez par votre paire de clés SSH
                                                # Remplacez par l'ID de votre sous-réseau public
   
     tags = {
-      Name = "ExampleInstance"
+      Name = "OwnCloud"
     }
-}
-# test
-# second test
+    
+    resource "null-resource" "docker_installation" {
+      depends_on = [aws_instance.Owncloud]
+
+      provisionner "remote-exec"{
+        inline = [
+          "sudo apt-get update",
+          "sudo apt-get install -y apt-transport-https ca-certificates curl software-properties-common",
+          "curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -",
+          "sudo add-apt-repository 'deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable'",
+          "sudo apt-get update",
+          "sudo apt-get install -y docker-ce",
+          "sudo systemctl enable docker",
+          "sudo systemctl start docker"
+        ]
+
+        connection {
+          type = "ssh"
+          user = "ubuntu"
+          private_key = file ("~/.ssh/notre_clé.pem")
+          host = aws_instance.Owncloud.public_ip
+        }
+    
+      }
+    }
+
+
+# On va configurer notre instance Ubuntu pour qu'elle installe automatiquement Docker 
