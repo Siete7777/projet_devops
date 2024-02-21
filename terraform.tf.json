@@ -1,29 +1,26 @@
-provider "aws"{
-  region = "us-east-1"
-  access_key = ""
-  secret_key = ""
+provider "aws" {
+  region     = "us-east-1"
+  access_key = "" # Ajoutez votre access key ici
+  secret_key = "" # Ajoutez votre secret key ici
 }
-# Dans cette section on fournit les informations sur notre provider de cloud
-# Ainsi que sur notre région préférée pour l'hébergement.
-
 
 # Création de l'instance EC2
-resource "aws_instance""Owncloud"{
+resource "aws_instance" "Owncloud" {
   ami           = "ami-0c7217cdde317cfec"  # ID de l'AMI Ubuntu 22.04 LTS
   instance_type = "t2.micro"               # Type d'instance
-  key_name      = ""          # Remplacez par votre paire de clés SSH
+            # Remplacez par votre paire de clés SSH
                                              # Remplacez par l'ID de votre sous-réseau public
 
   tags = {
     Name = "OwnCloud"
+  }
 }
- 
-  resource "null-resource""docker_installation"{
-    depends_on = [aws_instance.Owncloud
-  ]
 
-    provisionner "remote-exec"{
-      inline = [
+resource "null_resource" "docker_installation" {
+  depends_on = [aws_instance.Owncloud]
+
+  provisioner "remote-exec" {
+    inline = [
       "sudo apt-get update",
       "sudo apt-get install -y apt-transport-https ca-certificates curl software-properties-common",
       "curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -",
@@ -33,25 +30,18 @@ resource "aws_instance""Owncloud"{
       "sudo systemctl enable docker",
       "sudo systemctl start docker"
     ]
-    # On va configurer notre instance Ubuntu pour qu'elle installe automatiquement Docker
 
-
-      connection {
-        type = "ssh"
-        user = "ubuntu"
-        private_key = file ("~/.ssh/notre_clé.pem")
-        host = aws_instance.Owncloud.public_ip
-    }
   }
 }
 
-resource "aws_instance""Prometheus-Grafana"{
-  ami         = "ami-0c7217cdde317cfec"
+resource "aws_instance" "Prometheus-Grafana" {
+  ami           = "ami-0c7217cdde317cfec"
   instance_type = "t2.micro"
-  key_name = ""
+  #key_name      = "" # Remplacez par votre paire de clés SSH
   tags = {
     Name = "Prometheus-Grafana"
   }
+
   user_data = <<-EOF
               #!/bin/bash
               sudo apt update -y
@@ -62,36 +52,29 @@ resource "aws_instance""Prometheus-Grafana"{
               EOF
 }
 
-# Ouvrir le sports nécessaires dans le groupe de sécurité
-
-resource "aws_security_group""instance_sg"{
-  name = "instance_sg"
+# Ouvrir les ports nécessaires dans le groupe de sécurité
+resource "aws_security_group" "instance_sg" {
+  name        = "instance_sg"
   description = "Security group for EC2 instance"
- 
+
   ingress {
-    from_port = 80
-    to_port = 80
-    protocol = "tcp"
-    cidr_blocks = [
-      "0.0.0.0/0"
-    ]
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   ingress {
-    from_port = 3000
-    to_port = 3000
-    protocol = "tcp"
-    cidr_blocks = [
-      "0.0.0.0/0"
-    ]
+    from_port   = 3000
+    to_port     = 3000
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   egress {
-    from_port = 0
-    to_port = 0
-    protocol = "-1"
-    cidr_blocks = [
-      "0.0.0.0/0"
-    ]
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
   }
 }
