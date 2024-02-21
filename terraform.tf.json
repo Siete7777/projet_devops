@@ -11,7 +11,7 @@ provider "aws"{
 resource "aws_instance""Owncloud"{
   ami           = "ami-0c7217cdde317cfec"  # ID de l'AMI Ubuntu 22.04 LTS
   instance_type = "t2.micro"               # Type d'instance
-  key_name      = "AKIATCKAM6PFBKF47YKD"          # Remplacez par votre paire de clés SSH
+  key_name      = ""          # Remplacez par votre paire de clés SSH
                                              # Remplacez par l'ID de votre sous-réseau public
 
   tags = {
@@ -48,7 +48,7 @@ resource "aws_instance""Owncloud"{
 resource "aws_instance""Prometheus-Grafana"{
   ami         = "ami-0c7217cdde317cfec"
   instance_type = "t2.micro"
-  key_name = "AKIATCKAM6PFBKF47YKD"
+  key_name = ""
   tags = {
     Name = "Prometheus-Grafana"
   }
