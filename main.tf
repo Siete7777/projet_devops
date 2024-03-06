@@ -100,6 +100,7 @@ resource "aws_instance" "Prometheus-Grafana" {
                     WantedBy=multi-user.target" | sudo tee -a /etc/systemd/system/node_exporter.service
                 sudo systemctl enable node_exporter
                 sudo systemctl start node_exporter
+                EOF
 }
 
 
