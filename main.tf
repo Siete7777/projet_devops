@@ -6,7 +6,8 @@ provider "aws" {
 
 resource "aws_instance" "OwnCloud" {
     ami           = "ami-0c7217cdde317cfec"
-    instance_type = "t2.micro"
+    instance_type = "t2.large"
+    #vpc_security_group_ids = ["votre-groupe-de-securite-id"]
 
     tags = {
         Name = "OwnCloud"
@@ -30,7 +31,7 @@ resource "aws_instance" "OwnCloud" {
 
 resource "aws_instance" "Prometheus-Grafana" {
     ami = "ami-0c7217cdde317cfec"
-    instance_type = "t2.micro"
+    instance_type = "t2.medium"
 
     tags {
         Name = "Prometheus-Grafana"
