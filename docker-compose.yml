@@ -14,8 +14,7 @@ services:
       - mysql_data:/var/lib/mysql
 
   owncloud:
-    image: owncloud/server:latest
-    container_name: owncloud
+    image: owncloud/server
     restart: always
     ports:
       - "8081:8081"  # Changer le port 8080 si nécessaire
