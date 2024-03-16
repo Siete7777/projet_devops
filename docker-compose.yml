@@ -17,7 +17,7 @@ services:
     image: owncloud/server
     restart: always
     ports:
-      - "8081:8081"  # Changer le port 8080 si nécessaire
+      - "8080:8080"  # Changer le port 8080 si nécessaire
     environment:
       OWNCLOUD_DOMAIN: your_domain_or_public_ip
       OWNCLOUD_DB_TYPE: mysql
