@@ -45,6 +45,12 @@ pipeline {
                 }
             }
         }
+
+        stage('Personnalisation Owncloud'){
+            steps{
+                sh "docker exec -it projet_devops /bin/bash"
+            }
+        }
     }
 
 }
