@@ -54,7 +54,7 @@ pipeline {
                 sh "docker exec -it owcloud unzip master.zip"
                 sh "docker exec -it owncloud rm master.zip"
                 sh "docker exec -it owncloud mv theme-example-master mynewtheme"
-                sh "docker exec -it owncloud sed -i "s#<id>theme-example<#<id>mynewtheme<#" "mynewtheme/appinfo/info.xml""
+                sh 'docker exec -it owncloud sed -i "s#<id>theme-example<#<id>mynewtheme<#" "mynewtheme/appinfo/info.xml"'
                 sh "docker exec -it owncloud sudo chown -R www-data: mynewtheme"
                 sh "docker exec -it owncloud sudo -u www-data ./occ app:enable mynewtheme"
             }
