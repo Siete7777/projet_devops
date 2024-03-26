@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Installer unzip dans le conteneur projet_devops
-docker exec -it projet_devops apt install -y unzip
+docker exec -it projet_devops apt-get update && apt install -y unzip
 
 # Télécharger et installer le thème personnalisé
 docker exec -it owncloud bash -c ' \
