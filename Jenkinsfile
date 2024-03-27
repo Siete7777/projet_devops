@@ -46,17 +46,16 @@ pipeline {
             }
         }
 
-        stage('Personnalisation Owncloud'){
-            steps{
-                sh "docker exec -it projet_devops apt install unzip"
-                sh "docker exec -it owncloud cd /var/www/owncloud/apps"
-                sh "docker exec -it owcloud wget https://github.com/owncloud/theme-example/archive/master.zip"
-                sh "docker exec -it owcloud unzip master.zip"
-                sh "docker exec -it owncloud rm master.zip"
-                sh "docker exec -it owncloud mv theme-example-master mynewtheme"
-                sh 'docker exec -it owncloud sed -i "s#<id>theme-example<#<id>mynewtheme<#" "mynewtheme/appinfo/info.xml"'
-                sh "docker exec -it owncloud sudo chown -R www-data: mynewtheme"
-                sh "docker exec -it owncloud sudo -u www-data ./occ app:enable mynewtheme"
+        stage('Personnalisation Owncloud/exécution du script bash'){
+            steps{// Copie le script bash dans un fichier temporaire
+                    sh """
+                        echo '#!/bin/bash' > script.sh
+                        echo '$scriptContent' >> script.sh
+                    """
+                    // Exécute le script bash à l'intérieur d'un conteneur Docker
+                    sh "docker cp script.sh owncloud:/tmp/script.sh"
+                    sh "docker exec owncloud chmod +x /tmp/script.sh"
+                    sh "docker exec owncloud /tmp/script.sh"
             }
         }
     }
