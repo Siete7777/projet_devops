@@ -1,10 +1,10 @@
 #!/bin/bash
 
 # Installer unzip dans le conteneur projet_devops
-docker exec -it projet_devops apt-get update && apt install -y unzip
+docker exec -it owncloud-owncloud-1 apt-get update && apt install -y unzip
 
 # Télécharger et installer le thème personnalisé
-docker exec -it owncloud bash -c ' \
+docker exec -it owncloud-owncloud-1 bash -c ' \
     cd /var/www/owncloud/apps && \
     wget https://github.com/owncloud/theme-example/archive/master.zip && \
     unzip master.zip && \
@@ -16,7 +16,7 @@ docker exec -it owncloud bash -c ' \
 '
 
 # Mettre à jour l'image de fond
-docker exec -it owncloud bash -c ' \
+docker exec -it owncloud-owncloud-1 bash -c ' \
     cd /var/www/owncloud/core/img && \
     mv background.jpg old_background.jpg && \
     wget -O background.jpg https://www.eliott-markus.com/wp-content/uploads/2023/08/Groupe-1931@2x-min.png.webp \
