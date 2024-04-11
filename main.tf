@@ -4,6 +4,48 @@ provider "aws" {
     secret_key = ""
 }
 
+# Ouvrir les ports nécessaires dans le groupe de sécurité
+resource "aws_security_group" "terraform_group" {
+  name        = "terraform_group"
+  description = "Security group for EC2 instance Terraform"
+
+  ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  #Jenkins
+  ingress {
+    from_port   = 8080
+    to_port     = 8080
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  # SonarQube
+  ingress {
+    from_port   = 9000
+    to_port     = 9000
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  #OwnCloud
+  ingress {
+    from_port   = 8081
+    to_port     = 8081
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
 resource "aws_instance" "OwnCloud" {
     ami           = "ami-0c7217cdde317cfec"
     instance_type = "t2.large"
@@ -105,44 +147,3 @@ resource "aws_instance" "Prometheus-Grafana" {
 }
 
 
-# Ouvrir les ports nécessaires dans le groupe de sécurité
-resource "aws_security_group" "terraform_group" {
-  name        = "terraform_group"
-  description = "Security group for EC2 instance Terraform"
-
-  ingress {
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  ingress {
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-  #Jenkins
-  ingress {
-    from_port   = 8080
-    to_port     = 8080
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-  # SonarQube
-  ingress {
-    from_port   = 9000
-    to_port     = 9000
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  #OwnCloud
-  ingress {
-    from_port   = 8081
-    to_port     = 8081
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-}
