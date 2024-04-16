@@ -14,7 +14,7 @@ services:
       - mysql_data:/var/lib/mysql
 
   owncloud:
-    image: owncloud/server
+    image: siete777/owncloud-simon
     container_name: owncloud
     restart: always
     ports:
