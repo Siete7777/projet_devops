@@ -20,7 +20,7 @@ services:
     ports:
       - "8081:8080"  # Changer le port 8080 si nécessaire
     environment:
-      OWNCLOUD_DOMAIN: "34.226.75.168:8081"
+      OWNCLOUD_DOMAIN: "IP_ADRESS"
       OWNCLOUD_DB_TYPE: mysql
       OWNCLOUD_DB_HOST: mysql
       OWNCLOUD_DB_NAME: owncloud
